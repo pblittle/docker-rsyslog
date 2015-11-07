@@ -1,10 +1,7 @@
 FROM alpine:3.2
 MAINTAINER P. Barrett Little <barrett@barrettlittle.com> (@pblittle)
 
-# Set default Logstash version
 ENV RSYSLOG_VERSION 8.14
-
-ENV PATH ${ES_HOME}/bin:$PATH
 
 RUN apk add --update \
         bash \
@@ -12,5 +9,11 @@ RUN apk add --update \
     rm -rf /var/cache/apk/*
 
 ADD rsyslog.conf /etc/rsyslog.conf
+
+VOLUME /var/log
+VOLUME /var/spool/rsyslog
+
+EXPOSE 514
+EXPOSE 514/udp
 
 CMD /usr/sbin/rsyslogd -n
